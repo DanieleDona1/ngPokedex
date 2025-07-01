@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Pokedex } from './pokedex/pokedex';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, Pokedex],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
