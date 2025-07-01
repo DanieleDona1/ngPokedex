@@ -21,7 +21,9 @@
           </div>
         }
       </div>
-      <button (click)="addToTeam(pokemon, $event)">Add to Team</button>
+      <button (click)="addToTeam(pokemon, $event)">
+        {{ isInTeam(pokemon) ? 'Remove from Team' : 'Add to Team' }}
+      </button>
     </div>
   }
 </div>

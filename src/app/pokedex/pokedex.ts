@@ -109,11 +109,19 @@ export class Pokedex implements OnInit, OnChanges {
   }
 
   addToTeam(pokemon: any, event: Event): void {
-    event.stopPropagation();
-    const team = JSON.parse(localStorage.getItem('pokemonTeam') || '[]');
-    if (!team.some((p: any) => p.id === pokemon.id)) {
-      team.push(pokemon);
-      localStorage.setItem('pokemonTeam', JSON.stringify(team));
-    }
+  event.stopPropagation();
+  const team = JSON.parse(localStorage.getItem('pokemonTeam') || '[]');
+  const index = team.findIndex((p: any) => p.id === pokemon.id);
+  if (index === -1) {
+    team.push(pokemon);
+  } else {
+    team.splice(index, 1);
   }
+  localStorage.setItem('pokemonTeam', JSON.stringify(team));
+}
+
+isInTeam(pokemon: any): boolean {
+  const team = JSON.parse(localStorage.getItem('pokemonTeam') || '[]');
+  return team.some((p: any) => p.id === pokemon.id);
+}
 }
