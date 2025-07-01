@@ -23,7 +23,7 @@ export class Pokedex implements OnInit, OnChanges {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.loadPokemons(0, 151).subscribe(pokemons => {
+    this.loadPokemons(0, 20).subscribe(pokemons => {
       this.allPokemons = pokemons;
       this.pokemons = this.allPokemons;
       console.log('Geladene Pokémon:', this.pokemons);
