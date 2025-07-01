@@ -1,1 +1,10 @@
-<p>search works!</p>
+<header>
+    <div id="searchbar" class="searchbar">
+        <b>Daniele's Pokédex</b>
+        <input minlength="3" type="search" id="search" class="search" placeholder="🔍 search pokemon"
+            oninput="filterPokemon()" required />
+        <div id="inputMessage" class="input-message">
+            <b>Minimum 3 characters!</b>
+        </div>
+    </div>
+</header>
