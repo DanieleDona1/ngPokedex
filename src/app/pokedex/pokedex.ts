@@ -107,4 +107,13 @@ export class Pokedex implements OnInit, OnChanges {
       this.selectedPokemon = this.pokemons[currentIndex + 1];
     }
   }
+
+  addToTeam(pokemon: any, event: Event): void {
+    event.stopPropagation();
+    const team = JSON.parse(localStorage.getItem('pokemonTeam') || '[]');
+    if (!team.some((p: any) => p.id === pokemon.id)) {
+      team.push(pokemon);
+      localStorage.setItem('pokemonTeam', JSON.stringify(team));
+    }
+  }
 }
