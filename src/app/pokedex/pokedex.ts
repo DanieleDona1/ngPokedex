@@ -12,9 +12,10 @@ import { forkJoin, map, Observable } from 'rxjs';
 })
 export class Pokedex implements OnInit, OnChanges {
   @Input() searchTerm: string = '';
+  @Input() typeFilter: string = '';
 
   allPokemons: any[] = [];
-  pokemons: any[] = []; // This array will be displayed
+  pokemons: any[] = [];
   selectedPokemon: any | null = null;
   activeDetailTab: 'main' | 'stats' | 'evo' = 'main';
   private BASE_URL = 'https://pokeapi.co/api/v2/pokemon/';
@@ -24,19 +25,23 @@ export class Pokedex implements OnInit, OnChanges {
   ngOnInit(): void {
     this.loadPokemons(0, 151).subscribe(pokemons => {
       this.allPokemons = pokemons;
-      this.pokemons = this.allPokemons; // Initially, show all
+      this.pokemons = this.allPokemons;
       console.log('Geladene Pokémon:', this.pokemons);
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['searchTerm']) {
+    if (changes['searchTerm'] || changes['typeFilter']) {
       this.filterPokemons();
     }
   }
 
   filterPokemons(): void {
-    if (!this.searchTerm || this.searchTerm.length < 3) {
+    if (this.typeFilter) {
+      this.pokemons = this.allPokemons.filter(pokemon =>
+        pokemon.types.includes(this.typeFilter)
+      );
+    } else if (!this.searchTerm || this.searchTerm.length < 3) {
       this.pokemons = this.allPokemons;
     } else {
       this.pokemons = this.allPokemons.filter(pokemon =>

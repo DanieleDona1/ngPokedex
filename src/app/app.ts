@@ -12,8 +12,15 @@ import { Search } from './search/search';
 })
 export class App {
   currentSearchTerm: string = '';
+  currentTypeFilter: string = '';
 
   onSearchTermChanged(term: string): void {
     this.currentSearchTerm = term;
+    this.currentTypeFilter = '';
+  }
+
+  onTypeFilter(type: string): void {
+    this.currentTypeFilter = type;
+    this.currentSearchTerm = '';
   }
 }

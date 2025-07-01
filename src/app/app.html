@@ -1,3 +1,6 @@
-<app-search (searchTermChange)="onSearchTermChanged($event)"></app-search>
-<app-pokedex [searchTerm]="currentSearchTerm"></app-pokedex>
+<app-search
+  (searchTermChange)="onSearchTermChanged($event)"
+  (typeFilter)="onTypeFilter($event)">
+</app-search>
+<app-pokedex [searchTerm]="currentSearchTerm" [typeFilter]="currentTypeFilter"></app-pokedex>
 <router-outlet />
