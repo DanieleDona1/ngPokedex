@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { forkJoin, map, Observable } from 'rxjs';
 
 @Component({
@@ -10,8 +10,11 @@ import { forkJoin, map, Observable } from 'rxjs';
   templateUrl: './pokedex.html',
   styleUrl: './pokedex.scss'
 })
-export class Pokedex implements OnInit {
-  pokemons: any[] = [];
+export class Pokedex implements OnInit, OnChanges {
+  @Input() searchTerm: string = '';
+
+  allPokemons: any[] = [];
+  pokemons: any[] = []; // This array will be displayed
   selectedPokemon: any | null = null;
   activeDetailTab: 'main' | 'stats' | 'evo' = 'main';
   private BASE_URL = 'https://pokeapi.co/api/v2/pokemon/';
@@ -19,10 +22,27 @@ export class Pokedex implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.loadPokemons(0, 20).subscribe(pokemons => {
-      this.pokemons = pokemons;
+    this.loadPokemons(0, 151).subscribe(pokemons => {
+      this.allPokemons = pokemons;
+      this.pokemons = this.allPokemons; // Initially, show all
       console.log('Geladene Pokémon:', this.pokemons);
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['searchTerm']) {
+      this.filterPokemons();
+    }
+  }
+
+  filterPokemons(): void {
+    if (!this.searchTerm || this.searchTerm.length < 3) {
+      this.pokemons = this.allPokemons;
+    } else {
+      this.pokemons = this.allPokemons.filter(pokemon =>
+        pokemon.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
   }
 
   loadPokemons(start: number, end: number): Observable<any[]> {

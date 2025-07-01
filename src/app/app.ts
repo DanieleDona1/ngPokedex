@@ -5,10 +5,15 @@ import { Search } from './search/search';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet, Pokedex, Search],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected title = 'ngPokedex';
+  currentSearchTerm: string = '';
+
+  onSearchTermChanged(term: string): void {
+    this.currentSearchTerm = term;
+  }
 }
