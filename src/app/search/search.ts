@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './search.html',
   styleUrl: './search.scss'
 })
