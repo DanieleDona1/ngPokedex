@@ -1,17 +1,30 @@
-<!-- <div class="team-pokedex-container">
-  <h2>Dein Pokémon-Team</h2>
-  @if (team.length === 0) {
-    <div>Kein Pokémon im Team.</div>
-  }
-  @for (pokemon of team; track pokemon.id) {
-    <div class="card bg-{{pokemon.type}}">
-      <h3>#{{ pokemon.id }} {{ pokemon.name }}</h3>
-      <img [src]="pokemon.image" alt="{{ pokemon.name }}" class="card-img" />
-      <div>
-        @for (type of pokemon.types) {
-          <span class="type">{{ type }}</span>
+<div class="pokedex-container">
+  @for (pokemon of storedTeam; track pokemon.id) {
+    <div class="card bg-{{pokemon.type}} card-jump">
+    <!-- <div class="card bg-{{pokemon.type}} card-jump" (click)="openPokemonDetails(pokemon)"> -->
+      <div class="d-flex-c-c">
+        <h2 class="id">#{{ pokemon.id }} </h2>
+        <!-- <h2 class="id">#{{ pokemon.id }} {{ capitalizeFirstLetter(pokemon.name) }}</h2> -->
+      </div>
+      <div class="card-img-container">
+        <img class="card-img" [src]="pokemon.image" alt="poke-image" />
+        <img class="card-img-showdown" [src]="pokemon.image_showdown" alt="poke-image" />
+      </div>
+      <div class="pokemons-typ">
+        <div class="type-img1-container">
+          <img class="type-img1" [src]="'type/' + pokemon.types[0] + '.svg'">
+          <span class="type-text1">{{ pokemon.types[0] }}</span>
+        </div>
+        @if (pokemon.types[1]) {
+          <div class="type-img2-container">
+            <img class="type-img2" [src]="'type/' + pokemon.types[1] + '.svg'">
+            <span class="type-text2">{{ pokemon.types[1] }}</span>
+          </div>
         }
       </div>
+      <button (click)="addToTeam(pokemon, $event)">
+        {{ isInTeam(pokemon) ? 'Remove from Team' : 'Add to Team' }}
+      </button>
     </div>
   }
-</div> -->
+</div>
