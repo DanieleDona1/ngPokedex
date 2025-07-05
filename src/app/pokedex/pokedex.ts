@@ -18,7 +18,7 @@ export class Pokedex implements OnInit {
   @Input() typeFilter: string = '';
 
   allPokemons: any[] = [];
-  pokemons: any[] = [];
+  displayPokemons: any[] = [];
   selectedPokemon: any | null = null;
   activeDetailTab: 'main' | 'stats' | 'evo' = 'main';
   private BASE_URL = 'https://pokeapi.co/api/v2/pokemon/';
@@ -28,15 +28,19 @@ export class Pokedex implements OnInit {
   ngOnInit(): void {
     this.loadPokemons(0, 20).subscribe((pokemons) => {
       this.allPokemons = pokemons;
-      this.pokemons = this.allPokemons;
-      console.log('Geladene Pokémon:', this.pokemons);
+      this.displayPokemons = this.allPokemons;
+      console.log('Geladene Pokémon:', this.displayPokemons);
 
       this.searchFilterService.currentSearchTerm$.subscribe(() => {
-          this.pokemons = this.searchFilterService.filterPokemons(this.allPokemons);
-        });
+        this.displayPokemons = this.searchFilterService.filterPokemons(
+          this.allPokemons
+        );
+      });
 
       this.searchFilterService.currentFilterTypes$.subscribe(() => {
-        this.pokemons = this.searchFilterService.filterPokemons(this.allPokemons);
+        this.displayPokemons = this.searchFilterService.filterPokemons(
+          this.allPokemons
+        );
       });
     });
   }
@@ -104,20 +108,20 @@ export class Pokedex implements OnInit {
   }
 
   previousPkm(): void {
-    const currentIndex = this.pokemons.findIndex(
+    const currentIndex = this.displayPokemons.findIndex(
       (p) => p.id === this.selectedPokemon.id
     );
     if (currentIndex > 0) {
-      this.selectedPokemon = this.pokemons[currentIndex - 1];
+      this.selectedPokemon = this.displayPokemons[currentIndex - 1];
     }
   }
 
   nextPkm(): void {
-    const currentIndex = this.pokemons.findIndex(
+    const currentIndex = this.displayPokemons.findIndex(
       (p) => p.id === this.selectedPokemon.id
     );
-    if (currentIndex < this.pokemons.length - 1) {
-      this.selectedPokemon = this.pokemons[currentIndex + 1];
+    if (currentIndex < this.displayPokemons.length - 1) {
+      this.selectedPokemon = this.displayPokemons[currentIndex + 1];
     }
   }
 

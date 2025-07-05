@@ -20,7 +20,7 @@ export class Search {
     this.searchFilterService.setCurrentSearchTerm(inputValue);
   }
 
-  setFilterPokemonsByType(type: string){
+  setFilterPokemonsByType(type: string) {
     this.searchFilterService.toggleType(type);
     console.log('test');
   }

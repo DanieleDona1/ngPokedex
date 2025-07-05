@@ -1,82 +1,176 @@
 <!-- Pokémon-Kartenliste -->
 <div class="pokedex-container">
-  @for (pokemon of pokemons; track pokemon.id) {
-    <div class="card bg-{{pokemon.type}} card-jump" (click)="openPokemonDetails(pokemon)">
-      <div class="d-flex-c-c">
-        <h2 class="id">#{{ pokemon.id }} {{ capitalizeFirstLetter(pokemon.name) }}</h2>
-      </div>
-      <div class="card-img-container">
-        <img class="card-img" [src]="pokemon.image" alt="poke-image" />
-        <img class="card-img-showdown" [src]="pokemon.image_showdown" alt="poke-image" />
-      </div>
-      <div class="pokemons-typ">
-        <div class="type-img1-container">
-          <img class="type-img1" [src]="'type/' + pokemon.types[0] + '.svg'">
-          <span class="type-text1">{{ pokemon.types[0] }}</span>
-        </div>
-        @if (pokemon.types[1]) {
-          <div class="type-img2-container">
-            <img class="type-img2" [src]="'type/' + pokemon.types[1] + '.svg'">
-            <span class="type-text2">{{ pokemon.types[1] }}</span>
-          </div>
-        }
-      </div>
-      <button (click)="addToTeam(pokemon, $event)">
-        {{ isInTeam(pokemon) ? 'Remove from Team' : 'Add to Team' }}
-      </button>
+  @for (pokemon of displayPokemons; track pokemon.id) {
+  <div
+    class="card bg-{{ pokemon.type }} card-jump"
+    (click)="openPokemonDetails(pokemon)"
+  >
+    <div class="d-flex-c-c">
+      <h2 class="id">
+        #{{ pokemon.id }} {{ capitalizeFirstLetter(pokemon.name) }}
+      </h2>
     </div>
+    <div class="card-img-container">
+      <img class="card-img" [src]="pokemon.image" alt="poke-image" />
+      <img
+        class="card-img-showdown"
+        [src]="pokemon.image_showdown"
+        alt="poke-image"
+      />
+    </div>
+    <div class="pokemons-typ">
+      <div class="type-img1-container">
+        <img class="type-img1" [src]="'type/' + pokemon.types[0] + '.svg'" />
+        <span class="type-text1">{{ pokemon.types[0] }}</span>
+      </div>
+      @if (pokemon.types[1]) {
+      <div class="type-img2-container">
+        <img class="type-img2" [src]="'type/' + pokemon.types[1] + '.svg'" />
+        <span class="type-text2">{{ pokemon.types[1] }}</span>
+      </div>
+      }
+    </div>
+    <button (click)="addToTeam(pokemon, $event)">
+      {{ isInTeam(pokemon) ? "Remove from Team" : "Add to Team" }}
+    </button>
+  </div>
   }
 </div>
 
 <!-- Pokémon-Detailansicht (Dialog) -->
 @if (selectedPokemon) {
-  <div class="dialog-container" (click)="closeDialog()">
-    <div class="card detail-card bg-{{selectedPokemon.type}}" (click)="$event.stopPropagation()">
-      <div class="d-flex-c-c">
-        <h2 class="id">#{{ selectedPokemon.id }} {{ capitalizeFirstLetter(selectedPokemon.name) }}</h2>
-      </div>
-      <div class="img-container">
-        <img class="card-img detail-card-img" [src]="selectedPokemon.image" alt="poke-image"/>
-        <img (click)="closeDialog()" class="x-mark" src="./public/img/xmark.svg" alt="xmark">
-        <img (click)="previousPkm()" class="arrow-img-left" src="./public/img/leftArrow.svg" alt="left-arrow">
-        <img (click)="nextPkm()" class="arrow-img-right" src="./public/img/arrowRight.svg" alt="right-arrow">
-      </div>
+<div class="dialog-container" (click)="closeDialog()">
+  <div
+    class="card detail-card bg-{{ selectedPokemon.type }}"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="d-flex-c-c">
+      <h2 class="id">
+        #{{ selectedPokemon.id }}
+        {{ capitalizeFirstLetter(selectedPokemon.name) }}
+      </h2>
+    </div>
+    <div class="img-container">
+      <img
+        class="card-img detail-card-img"
+        [src]="selectedPokemon.image"
+        alt="poke-image"
+      />
+      <img
+        (click)="closeDialog()"
+        class="x-mark"
+        src="./public/img/xmark.svg"
+        alt="xmark"
+      />
+      <img
+        (click)="previousPkm()"
+        class="arrow-img-left"
+        src="./public/img/leftArrow.svg"
+        alt="left-arrow"
+      />
+      <img
+        (click)="nextPkm()"
+        class="arrow-img-right"
+        src="./public/img/arrowRight.svg"
+        alt="right-arrow"
+      />
+    </div>
 
-      <div class="detail-info-container">
-        <div class="navigation">
-          <button (click)="activeDetailTab = 'main'" [class.active]="activeDetailTab === 'main'">main</button>
-          <button (click)="activeDetailTab = 'stats'" [class.active]="activeDetailTab === 'stats'">stats</button>
-          <button (click)="activeDetailTab = 'evo'" [class.active]="activeDetailTab === 'evo'">evo chain</button>
+    <div class="detail-info-container">
+      <div class="navigation">
+        <button
+          (click)="activeDetailTab = 'main'"
+          [class.active]="activeDetailTab === 'main'"
+        >
+          main
+        </button>
+        <button
+          (click)="activeDetailTab = 'stats'"
+          [class.active]="activeDetailTab === 'stats'"
+        >
+          stats
+        </button>
+        <button
+          (click)="activeDetailTab = 'evo'"
+          [class.active]="activeDetailTab === 'evo'"
+        >
+          evo chain
+        </button>
+      </div>
+      <div class="view-characteristics">
+        <!-- Main-Tab -->
+        @if (activeDetailTab === 'main') {
+        <div>
+          <div class="main-characteristics">
+            <span>Height:</span> <span>{{ selectedPokemon.height }} m</span>
+          </div>
+          <div class="main-characteristics">
+            <span>Weight:</span> <span>{{ selectedPokemon.weight }} kg</span>
+          </div>
+          <div class="main-characteristics">
+            <span>Base experience:</span>
+            <span>{{ selectedPokemon.baseExperience }} exp</span>
+          </div>
+          <div class="main-characteristics">
+            <span>Abilities:</span> <span>{{ selectedPokemon.abilities }}</span>
+          </div>
         </div>
-        <div class="view-characteristics">
-          <!-- Main-Tab -->
-          @if (activeDetailTab === 'main') {
-            <div>
-              <div class="main-characteristics"><span>Height:</span> <span>{{ selectedPokemon.height }} m</span></div>
-              <div class="main-characteristics"><span>Weight:</span> <span>{{ selectedPokemon.weight }} kg</span></div>
-              <div class="main-characteristics"><span>Base experience:</span> <span>{{ selectedPokemon.baseExperience }} exp</span></div>
-              <div class="main-characteristics"><span>Abilities:</span> <span>{{ selectedPokemon.abilities }}</span></div>
-            </div>
-          }
-          <!-- Stats-Tab -->
-          @if (activeDetailTab === 'stats') {
-            <div>
-              <div class="progress-container d-flex-c-c"><p>HP: {{ selectedPokemon.hp }}</p><div class="progress-bar bg-bar-{{selectedPokemon.type}}" [style.width]="selectedPokemon.hp + '%'"></div></div>
-              <div class="progress-container d-flex-c-c"><p>ATTACK: {{ selectedPokemon.attack }}</p><div class="progress-bar bg-bar-{{selectedPokemon.type}}" [style.width]="selectedPokemon.attack + '%'"></div></div>
-              <div class="progress-container d-flex-c-c"><p>DEFENSE: {{ selectedPokemon.defense }}</p><div class="progress-bar bg-bar-{{selectedPokemon.type}}" [style.width]="selectedPokemon.defense + '%'"></div></div>
-              <div class="progress-container d-flex-c-c"><p>SPECIAL ATTACK: {{ selectedPokemon.special_attack }}</p><div class="progress-bar bg-bar-{{selectedPokemon.type}}" [style.width]="selectedPokemon.special_attack + '%'"></div></div>
-              <div class="progress-container d-flex-c-c"><p>SPECIAL DEFENSE: {{ selectedPokemon.special_defense }}</p><div class="progress-bar bg-bar-{{selectedPokemon.type}}" [style.width]="selectedPokemon.special_defense + '%'"></div></div>
-              <div class="progress-container d-flex-c-c"><p>SPEED: {{ selectedPokemon.speed }}</p><div class="progress-bar bg-bar-{{selectedPokemon.type}}" [style.width]="selectedPokemon.speed + '%'"></div></div>
-            </div>
-          }
-          <!-- Evo-Tab -->
-          @if (activeDetailTab === 'evo') {
-            <div>
-              <p>Evolution chain feature coming soon!</p>
-            </div>
-          }
+        }
+        <!-- Stats-Tab -->
+        @if (activeDetailTab === 'stats') {
+        <div>
+          <div class="progress-container d-flex-c-c">
+            <p>HP: {{ selectedPokemon.hp }}</p>
+            <div
+              class="progress-bar bg-bar-{{ selectedPokemon.type }}"
+              [style.width]="selectedPokemon.hp + '%'"
+            ></div>
+          </div>
+          <div class="progress-container d-flex-c-c">
+            <p>ATTACK: {{ selectedPokemon.attack }}</p>
+            <div
+              class="progress-bar bg-bar-{{ selectedPokemon.type }}"
+              [style.width]="selectedPokemon.attack + '%'"
+            ></div>
+          </div>
+          <div class="progress-container d-flex-c-c">
+            <p>DEFENSE: {{ selectedPokemon.defense }}</p>
+            <div
+              class="progress-bar bg-bar-{{ selectedPokemon.type }}"
+              [style.width]="selectedPokemon.defense + '%'"
+            ></div>
+          </div>
+          <div class="progress-container d-flex-c-c">
+            <p>SPECIAL ATTACK: {{ selectedPokemon.special_attack }}</p>
+            <div
+              class="progress-bar bg-bar-{{ selectedPokemon.type }}"
+              [style.width]="selectedPokemon.special_attack + '%'"
+            ></div>
+          </div>
+          <div class="progress-container d-flex-c-c">
+            <p>SPECIAL DEFENSE: {{ selectedPokemon.special_defense }}</p>
+            <div
+              class="progress-bar bg-bar-{{ selectedPokemon.type }}"
+              [style.width]="selectedPokemon.special_defense + '%'"
+            ></div>
+          </div>
+          <div class="progress-container d-flex-c-c">
+            <p>SPEED: {{ selectedPokemon.speed }}</p>
+            <div
+              class="progress-bar bg-bar-{{ selectedPokemon.type }}"
+              [style.width]="selectedPokemon.speed + '%'"
+            ></div>
+          </div>
         </div>
+        }
+        <!-- Evo-Tab -->
+        @if (activeDetailTab === 'evo') {
+        <div>
+          <p>Evolution chain feature coming soon!</p>
+        </div>
+        }
       </div>
     </div>
   </div>
+</div>
 }
