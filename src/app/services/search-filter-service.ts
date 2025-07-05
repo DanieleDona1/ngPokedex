@@ -41,10 +41,12 @@ export class SearchFilterService {
     }
   }
 
-  filterPokemonsByType(pokemonList: any[]) {
-    // return pokemonList.filter(pokemon =>
-    //   pokemon.types.some((p: any) => p.type.name === this.currentFilterTypeSubject.value)
-    // );
+  filterPokemonsByType(pokemonList: any[]): any[] {
+    const types = this.currentFilterTypesSubject.value;
+    if (!types.length) return pokemonList;
+    return pokemonList.filter((pokemon) =>
+      pokemon.types.some((t: string) => types.includes(t))
+    );
   }
 }
 

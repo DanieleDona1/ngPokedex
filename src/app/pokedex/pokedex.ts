@@ -35,10 +35,23 @@ export class Pokedex implements OnInit {
           this.pokemons = this.searchFilterService.filterPokemonsByName(
             this.allPokemons
           );
-          console.log('sub');
+          console.log('subName');
         });
+
+      // Hier abonnierst du currentFilterTypes$
+      this.searchFilterService.currentFilterTypes$.subscribe((types) => {
+        this.pokemons = this.searchFilterService.filterPokemonsByType(
+          this.allPokemons
+        );
+      });
     });
   }
+
+  // ngOnDestroy(): void {
+  //   if (this.filterTypesSubscription) {
+  //     this.filterTypesSubscription.unsubscribe();
+  //   }
+  // }
 
   // ngOnChanges(changes: SimpleChanges): void {
   //   if (changes['searchTerm'] || changes['typeFilter']) {
