@@ -13,16 +13,17 @@ export class SearchFilterService {
     this.currentSearchTermSubject.next(value);
   }
 
-  filterPokemonsByName(pokemonList: any[]) {
+  filterPokemonsByName(pokemonList: any[]): any[] {
+    const searchTerm = this.currentSearchTermSubject.value.trim().toLowerCase();
+    if (!searchTerm.length) return pokemonList;
     return pokemonList.filter((pokemon) =>
-      pokemon.name
-        .toLowerCase()
-        .includes(this.currentSearchTermSubject.value.toLowerCase())
+      pokemon.name.toLowerCase().includes(searchTerm)
     );
   }
 
   private currentFilterTypesSubject = new BehaviorSubject<string[]>([]);
-  currentFilterTypes$: Observable<string[]> = this.currentFilterTypesSubject.asObservable();
+  currentFilterTypes$: Observable<string[]> =
+    this.currentFilterTypesSubject.asObservable();
 
   toggleType(type: string) {
     const types = this.currentFilterTypesSubject.value;
@@ -45,8 +46,14 @@ export class SearchFilterService {
     const types = this.currentFilterTypesSubject.value;
     if (!types.length) return pokemonList;
     return pokemonList.filter((pokemon) =>
-      pokemon.types.some((t: string) => types.includes(t))
+      types.every((filterType) => pokemon.types.includes(filterType))
     );
+  }
+
+  filterPokemons(pokemonList: any[]): any[] {
+    let filtered = this.filterPokemonsByType(pokemonList);
+    filtered = this.filterPokemonsByName(filtered);
+    return filtered;
   }
 }
 

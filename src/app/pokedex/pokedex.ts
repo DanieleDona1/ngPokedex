@@ -31,18 +31,12 @@ export class Pokedex implements OnInit {
       this.pokemons = this.allPokemons;
       console.log('Geladene Pokémon:', this.pokemons);
 
-      this.searchFilterService.currentSearchTerm$.subscribe((term) => {
-          this.pokemons = this.searchFilterService.filterPokemonsByName(
-            this.allPokemons
-          );
-          console.log('subName');
+      this.searchFilterService.currentSearchTerm$.subscribe(() => {
+          this.pokemons = this.searchFilterService.filterPokemons(this.allPokemons);
         });
 
-      // Hier abonnierst du currentFilterTypes$
-      this.searchFilterService.currentFilterTypes$.subscribe((types) => {
-        this.pokemons = this.searchFilterService.filterPokemonsByType(
-          this.allPokemons
-        );
+      this.searchFilterService.currentFilterTypes$.subscribe(() => {
+        this.pokemons = this.searchFilterService.filterPokemons(this.allPokemons);
       });
     });
   }
