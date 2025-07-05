@@ -2,13 +2,20 @@
     <div id="searchbar" class="searchbar">
         <b>Daniele's Pokédex</b>
         <input minlength="3" type="search" id="search" class="search" placeholder="🔍 search pokemon"
-            (input)="onSearch($event)" required />
+             [(ngModel)]="currentSearchTerm" (input)="onSearch(currentSearchTerm)" required />
         <div id="inputMessage" class="input-message">
             <b>Minimum 3 characters!</b>
         </div>
-        <button (click)="filterByType('fire')" [class.active]="activeType === 'fire'">
-            Fire
-        </button>
-        <button routerLink="/team">load Team Pokedex</button>
+        <div class="advanced-filter-container">
+            <button (click)="setFilterPokemonsByType('fire')">
+            <!-- <button (click)="filterByType('fire')" [class.active]="activeType === 'fire'"> -->
+                Fire
+            </button>
+            <button (click)="setFilterPokemonsByType('flying')">
+            <!-- <button (click)="filterByType('fire')" [class.active]="activeType === 'fire'"> -->
+                Flying
+            </button>
+        </div>
+            <button routerLink="/team">load Team Pokedex</button>
     </div>
 </header>

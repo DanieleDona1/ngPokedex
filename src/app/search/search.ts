@@ -1,31 +1,27 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { SearchFilterService } from '../services/search-filter-service';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, FormsModule],
   templateUrl: './search.html',
-  styleUrl: './search.scss'
+  styleUrl: './search.scss',
 })
 export class Search {
-  @Output() searchTermChange = new EventEmitter<string>();
-  @Output() typeFilter = new EventEmitter<string>();
+  private searchFilterService = inject(SearchFilterService);
 
-  activeType: string = '';
+  currentSearchTerm: string = '';
 
-  onSearch(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    this.searchTermChange.emit(input.value);
+  onSearch(inputValue: string) {
+    console.log(inputValue);
+    this.searchFilterService.setCurrentSearchTerm(inputValue);
   }
 
-  filterByType(type: string): void {
-    if (this.activeType === type) {
-      this.activeType = '';
-      this.typeFilter.emit('');
-    } else {
-      this.activeType = type;
-      this.typeFilter.emit(type);
-    }
+  setFilterPokemonsByType(type: string){
+    this.searchFilterService.toggleType(type);
+    console.log('test');
   }
 }
